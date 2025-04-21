@@ -15,14 +15,14 @@ public class AirportManagementApp {
     public static void main(String[] args) {
         JFrame frame = new JFrame("Airport Management System");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(500, 400);
+        frame.setSize(500, 500);
         frame.setLayout(new BorderLayout());
 
         JLabel header = new JLabel("Flight Scheduler", SwingConstants.CENTER);
         header.setFont(new Font("Arial", Font.BOLD, 18));
         frame.add(header, BorderLayout.NORTH);
 
-        JPanel panel = new JPanel(new GridLayout(5, 2));
+        JPanel panel = new JPanel(new GridLayout(7, 2));
 
         JTextField flightNumberField = new JTextField();
         JTextField originField = new JTextField();
@@ -39,13 +39,21 @@ public class AirportManagementApp {
         panel.add(airlineField);
 
         JButton scheduleButton = new JButton("Schedule Flight");
+        JButton cancelButton = new JButton("Cancel Flight");
+        JButton changeButton = new JButton("Change Flight");
+
         panel.add(scheduleButton);
+        panel.add(cancelButton);
+        panel.add(changeButton);
 
         JTextArea outputArea = new JTextArea();
         outputArea.setEditable(false);
         JScrollPane scrollPane = new JScrollPane(outputArea);
         frame.add(panel, BorderLayout.CENTER);
         frame.add(scrollPane, BorderLayout.SOUTH);
+
+        Map<String, Flight> flightMap = new HashMap<>();
+        Airline airline = new Airline();
 
         scheduleButton.addActionListener(new ActionListener() {
             @Override
@@ -55,11 +63,38 @@ public class AirportManagementApp {
                 String dest = destinationField.getText();
                 String airlineName = airlineField.getText();
 
-                Airline airline = new Airline();
                 Flight flight = new Flight(flightNum, airline, origin, dest);
                 airline.addFlight(flight);
+                flightMap.put(flightNum, flight);
 
                 outputArea.append("Flight " + flightNum + " scheduled from " + origin + " to " + dest + " for airline " + airlineName + "\n");
+            }
+        });
+
+        cancelButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String flightNum = flightNumberField.getText();
+                airline.cancelFlight(flightNum);
+                flightMap.remove(flightNum);
+                outputArea.append("Flight " + flightNum + " canceled.\n");
+            }
+        });
+
+        changeButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String flightNum = flightNumberField.getText();
+                String newOrigin = originField.getText();
+                String newDest = destinationField.getText();
+
+                Flight flight = flightMap.get(flightNum);
+                if (flight != null) {
+                    flight.changeFlightDetails(newOrigin, newDest);
+                    outputArea.append("Flight " + flightNum + " changed to new origin: " + newOrigin + ", destination: " + newDest + "\n");
+                } else {
+                    outputArea.append("Flight not found.\n");
+                }
             }
         });
 

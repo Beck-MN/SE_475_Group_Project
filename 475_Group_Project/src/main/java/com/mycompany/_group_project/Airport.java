@@ -4,7 +4,6 @@
  */
 package com.mycompany._group_project;
 import java.util.*;
-import javax.swing.*;
 /**
  *
  * @author cbchr

@@ -30,6 +30,12 @@ public class Flight {
         System.out.println("Flight " + flightNumber + " status updated to: " + status);
     }
 
+    public void changeFlightDetails(String newOrigin, String newDestination) {
+        this.origin = newOrigin;
+        this.destination = newDestination;
+        System.out.println("Flight " + flightNumber + " updated: new origin = " + origin + ", new destination = " + destination);
+    }
+
     public void assignGate(Gate gate) {
         gate.assignFlight(this);
     }
@@ -40,5 +46,5 @@ public class Flight {
 
     public String getFlightNumber() {
         return flightNumber;
-    }   
+    }  
 }

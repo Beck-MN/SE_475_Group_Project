@@ -21,4 +21,17 @@ public class Airline {
     public void addFlight(Flight flight) {
         flights.add(flight);
     }
+    public void cancelFlight(String flightNumber) {
+        flights.removeIf(f -> f.getFlightNumber().equals(flightNumber));
+        System.out.println("Flight " + flightNumber + " canceled.");
+    }
+
+    public Flight getFlight(String flightNumber) {
+        for (Flight f : flights) {
+            if (f.getFlightNumber().equals(flightNumber)) {
+                return f;
+            }
+        }
+        return null;
+    }
 }
